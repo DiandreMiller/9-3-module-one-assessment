@@ -28,7 +28,19 @@ const exampleMovies = require("./movies");
       "James and the Giant Peach",
     ];
  */
-function getAllMovieTitles() {}
+function getAllMovieTitles(movies) {
+  if(!movies.length){
+    return []
+  }
+
+  let titles = []
+  for(let i = 0; i < movies.length; i++){
+    if(movies[i].title){
+      titles.push(movies[i].title)
+    }
+  }
+  return titles
+}
 
 /**
  * getHighestMetascore()
@@ -41,7 +53,20 @@ function getAllMovieTitles() {}
  *  getHighestMetascore(movies);
  *  //> 96
  */
-function getHighestMetascore() {}
+function getHighestMetascore(movies) {
+  if(!movies.length){
+    return 0
+    
+  }
+  let highestScore = Number(movies[0].metascore)
+  for (let i = 1; i < movies.length; i++){
+    if(Number(movies[i].metascore) > highestScore){
+      highestScore = movies[i].metascore
+    }
+  }
+  //console.log(typeof highestScore)
+  return Number(highestScore)
+}
 
 /**
  * getAverageIMDBRating()
@@ -54,7 +79,18 @@ function getHighestMetascore() {}
  *  getAverageIMDBRating(movies);
  *  //> 7.76
  */
-function getAverageIMDBRating() {}
+function getAverageIMDBRating(movies) {
+  let sum = []
+  let average = 0
+
+  for(let i = 0; i < movies.length; i++){
+    let num = Number(movies[i].imdbRating)
+      sum.push(num)
+      let sum1 = sum.reduce((a,b) => a+b)
+      average = (sum1)/movies.length
+  }
+  return average
+}
 
 /**
  * countByRating()
@@ -67,7 +103,18 @@ function getAverageIMDBRating() {}
  *  countByRating(movies);
  *  //> { G: 3, PG: 7 }
  */
-function countByRating() {}
+function countByRating(movies) {
+  let rating = {}
+  for(let i = 0; i < movies.length; i++){
+    if(rating[movies[i].rated]){
+      rating[movies[i].rated] += 1
+    } else {
+      rating[movies[i].rated] = 1
+    }
+  }
+  //console.log(rating)
+  return rating
+}
 
 /**
  * findById()
@@ -83,7 +130,19 @@ function countByRating() {}
       // Toy Story 4
     };
  */
-function findById() {}
+function findById(movies, id) {
+  if(!movies.length){// why does both edge cases pass even if I put just one of them? Why does the second edge case cause the rest of the tests to fail?
+    //|| movies.id !== id
+    return null
+  }
+  for(let i = 0; i < movies.length; i++){
+    if(movies[i].imdbID === id) {
+      return movies[i]
+    }
+    
+  }
+  return null
+}
 
 /**
  * filterByGenre()
@@ -105,7 +164,23 @@ function findById() {}
  *  filterByGenre(movies, "Horror")
  *  //> []
  */
-function filterByGenre() {}
+function filterByGenre(movies, genre) {
+  //console.log(genre)
+  if(!movies.length){
+    return []
+  }
+
+  let genre1 = []
+  let fixedGenre = `${genre[0].toUpperCase()}${genre.slice(1).toLowerCase()}`
+  //console.log(fixedGenre)
+
+  for(let i = 0; i < movies.length; i++){
+    if(movies[i].genre.includes(fixedGenre)){
+      genre1.push(movies[i])
+    }
+  }
+  return genre1
+}
 
 /**
  * getAllMoviesReleasedAtOrBeforeYear()
@@ -129,7 +204,23 @@ function filterByGenre() {}
       }
     ];
  */
-function getAllMoviesReleasedAtOrBeforeYear() {}
+function getAllMoviesReleasedAtOrBeforeYear(movies, year) {
+  if(!movies.length){
+    return []
+  }
+
+  let movies1 = []
+
+  for(let i = 0; i < movies.length; i++){
+    let releaseYear = Number(movies[i].released.slice(-4))
+    //console.log(releaseYear, typeof releaseYear)
+    if(releaseYear <= year){
+      movies1.push(movies[i])
+      //console.log(movies1)
+    }
+  }
+  return movies1
+}
 
 /**
  * getBiggestBoxOfficeMovie()
@@ -142,7 +233,25 @@ function getAllMoviesReleasedAtOrBeforeYear() {}
  *  getBiggestBoxOfficeMovie(movies);
  *  //> "Incredibles 2"
  */
-function getBiggestBoxOfficeMovie() {}
+function getBiggestBoxOfficeMovie(movies) {
+  if(!movies.length){
+    return null
+  }
+  let highest = Number(movies[0].boxOffice.slice(1).split(',').join(''))
+  //console.log(highest, typeof highest)
+  let name = movies[0].title
+  //console.log(name)
+
+  for(let i = 1; i < movies.length; i++){
+    if(Number(movies[i].boxOffice.slice(1).split(',').join('')) > highest){
+      highest = Number(movies[i].boxOffice.slice(1).split(',').join(''))
+      //console.log(highest, typeof highest)
+      name = movies[i].title
+    }
+  }
+//console.log(name)
+return name
+}
 
 // Do not change anything below this line.
 module.exports = {
